@@ -3,7 +3,7 @@ project(sort_compare)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES Algorithms/RadixSort.cpp Algorithms/RadixSort.h Algorithms/SortAlgorithm.cpp Algorithms/SortAlgorithm.h Algorithms/ArrayUtils.cpp Algorithms/ArrayUtils.h Algorithms/InsertionSort.cpp Algorithms/InsertionSort.h)
+set(SOURCE_FILES SortAlgorithms/RadixSort.cpp SortAlgorithms/RadixSort.h SortAlgorithms/SortAlgorithm.cpp SortAlgorithms/SortAlgorithm.h SortAlgorithms/ArrayUtils.cpp SortAlgorithms/ArrayUtils.h SortAlgorithms/InsertionSort.cpp SortAlgorithms/InsertionSort.h)
 add_library(sort_algorithms SHARED ${SOURCE_FILES})
 
 set(MAIN_FILES Main.cpp)

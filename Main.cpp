@@ -1,10 +1,10 @@
 #include <iostream>
 #include <zconf.h>
 #include <chrono>
-#include "Algorithms/SortAlgorithm.h"
-#include "Algorithms/RadixSort.h"
-#include "Algorithms/ArrayUtils.h"
-#include "Algorithms/InsertionSort.h"
+#include "SortAlgorithms/SortAlgorithm.h"
+#include "SortAlgorithms/RadixSort.h"
+#include "SortAlgorithms/ArrayUtils.h"
+#include "SortAlgorithms/InsertionSort.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -33,13 +33,13 @@ long measureAlgTime(SortAlgorithm *alg, int *array, int N) {
 }
 
 int main(int argc, char **argv) {
-    /* Algorithms for testing */
+    /* SortAlgorithms for testing */
     SortAlgorithm *algorithms[] = {
             new RadixSort(),
             new InsertionSort()
     };
 
-    /* Algorithms size */
+    /* SortAlgorithms size */
     int algSize = sizeof(algorithms) / sizeof(*algorithms);
 
     /* Get arguments from command line */
