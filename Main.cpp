@@ -6,6 +6,7 @@
 #include "SortAlgorithms/ArrayUtils.h"
 #include "SortAlgorithms/InsertionSort.h"
 #include "SortAlgorithms/BubbleSort.h"
+#include "SortAlgorithms/QuickSort.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -36,9 +37,10 @@ long measureAlgTime(SortAlgorithm *alg, int *array, int N) {
 int main(int argc, char **argv) {
     /* SortAlgorithms for testing */
     SortAlgorithm *algorithms[] = {
-            new RadixSort(),
             new BubbleSort(),
-            new InsertionSort()
+            new InsertionSort(),
+            new QuickSort(),
+            new RadixSort()
     };
 
     /* SortAlgorithms size */
