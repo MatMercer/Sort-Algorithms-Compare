@@ -5,6 +5,7 @@
 #include "SortAlgorithms/RadixSort.h"
 #include "SortAlgorithms/ArrayUtils.h"
 #include "SortAlgorithms/InsertionSort.h"
+#include "SortAlgorithms/BubbleSort.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -36,6 +37,7 @@ int main(int argc, char **argv) {
     /* SortAlgorithms for testing */
     SortAlgorithm *algorithms[] = {
             new RadixSort(),
+            new BubbleSort(),
             new InsertionSort()
     };
 

@@ -1,7 +1,3 @@
-//
-// Created by mat on 7/1/17.
-//
-
 #include "InsertionSort.h"
 
 void InsertionSort::sort(int *array, int n) const {
