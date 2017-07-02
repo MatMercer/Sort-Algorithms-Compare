@@ -7,6 +7,7 @@
 #include "SortAlgorithms/InsertionSort.h"
 #include "SortAlgorithms/BubbleSort.h"
 #include "SortAlgorithms/QuickSort.h"
+#include "SortAlgorithms/SelectionSort.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -39,6 +40,7 @@ int main(int argc, char **argv) {
     SortAlgorithm *algorithms[] = {
             new BubbleSort(),
             new InsertionSort(),
+            new SelectionSort(),
             new QuickSort(),
             new RadixSort()
     };
@@ -141,7 +143,7 @@ int main(int argc, char **argv) {
             delete[] array;
         }
 
-        cerr << "With crescent sorted numbers array..." << endl;
+        cerr << "With decrescent sorted numbers array..." << endl;
         for (int N = 1; N <= maxN; N += 1) {
             /* Allocate the array */
             int *array = ArrayUtils::genRandDecSortedNumArray(N, minVal, maxVal);

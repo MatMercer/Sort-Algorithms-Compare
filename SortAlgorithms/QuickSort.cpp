@@ -8,6 +8,7 @@ void QuickSort::sort(int *array, int n) const {
     this->quickSort(array, 0, n - 1);
 }
 
+/* http://www.algolist.net/Algorithms/Sorting/Quicksort */
 void QuickSort::quickSort(int *array, int left, int right) const {
     int i = left, j = right;
     int tmp;
