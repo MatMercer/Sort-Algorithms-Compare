@@ -8,6 +8,7 @@
 #include "SortAlgorithms/BubbleSort.h"
 #include "SortAlgorithms/QuickSort.h"
 #include "SortAlgorithms/SelectionSort.h"
+#include "SortAlgorithms/MergeSort.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -42,6 +43,7 @@ int main(int argc, char **argv) {
             new InsertionSort(),
             new SelectionSort(),
             new QuickSort(),
+            new MergeSort(),
             new RadixSort()
     };
 
