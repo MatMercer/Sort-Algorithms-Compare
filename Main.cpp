@@ -3,9 +3,6 @@
 #include <chrono>
 #include <fstream>
 #include <algorithm>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <cstdlib>
 #include "SortAlgorithms/SortAlgorithm.h"
 #include "SortAlgorithms/RadixSort.h"
 #include "SortAlgorithms/ArrayUtils.h"
@@ -24,12 +21,6 @@ using namespace std::chrono;
 /* CSV program output */
 void csvOutput(ofstream *file, char csvSep, string algName, string dataType, long nanoseconds, int N, int minVal, int maxVal) {
     *file << algName << csvSep << dataType << csvSep << nanoseconds << csvSep << N << csvSep << minVal << csvSep
-         << maxVal << endl;
-}
-
-void
-csvOutput(char csvSep, string algName, string dataType, string nanoseconds, string N, string minVal, string maxVal) {
-    cout << algName << csvSep << dataType << csvSep << nanoseconds << csvSep << N << csvSep << minVal << csvSep
          << maxVal << endl;
 }
 
