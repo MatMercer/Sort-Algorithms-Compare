@@ -2,6 +2,7 @@
 
 [![](https://i.imgur.com/LcTxMWg.png)](https://plot.ly/~MatMercer/13/sort-algorithms-comparison-with-random-arrays/)
 
+## For what this project is used for?
 This project tests sort algorithms execution time by nanoseconds based in an N size array that increments from 1 to a max size specified by command line arguments.
 
 #### The sortalgs executable generates .csv files based in the algorithms:
