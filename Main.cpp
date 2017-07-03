@@ -1,6 +1,11 @@
 #include <iostream>
 #include <zconf.h>
 #include <chrono>
+#include <fstream>
+#include <algorithm>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <cstdlib>
 #include "SortAlgorithms/SortAlgorithm.h"
 #include "SortAlgorithms/RadixSort.h"
 #include "SortAlgorithms/ArrayUtils.h"
@@ -10,12 +15,15 @@
 #include "SortAlgorithms/SelectionSort.h"
 #include "SortAlgorithms/MergeSort.h"
 
+/* CSV files folder name */
+#define CSV_FOLDER "sortalgs_csv/"
+
 using namespace std;
 using namespace std::chrono;
 
 /* CSV program output */
-void csvOutput(char csvSep, string algName, string dataType, long nanoseconds, int N, int minVal, int maxVal) {
-    cout << algName << csvSep << dataType << csvSep << nanoseconds << csvSep << N << csvSep << minVal << csvSep
+void csvOutput(ofstream *file, char csvSep, string algName, string dataType, long nanoseconds, int N, int minVal, int maxVal) {
+    *file << algName << csvSep << dataType << csvSep << nanoseconds << csvSep << N << csvSep << minVal << csvSep
          << maxVal << endl;
 }
 
@@ -35,6 +43,29 @@ long measureAlgTime(SortAlgorithm *alg, int *array, int N) {
     /* Return the nanoseconds */
     return t2 - t1;
 }
+
+/* Returns a csv file with the header already inserted */
+void openAlgCSVFile(ofstream *file, char csvSep, string name, string dataType) {
+    /* Lower case the names */
+    transform(name.begin(), name.end(), name.begin(), ::tolower);
+    transform(dataType.begin(), dataType.end(), dataType.begin(), ::tolower);
+
+    /* Generates the file name */
+    string fileName = name + "." + dataType + ".csv";
+
+    /* Remove spaces */
+    replace(fileName.begin(), fileName.end(), ' ', '_');
+
+    //cout << "Opening '" << fileName << "' file." << endl;
+
+    file->open(CSV_FOLDER + fileName);
+    
+    /* CSV header */
+    *file << "Algorithm Name" << csvSep << "Data Type" << csvSep << "Nano Seconds" << csvSep << "N" << csvSep
+         << "Min. Value" << csvSep << "Max. Value" << endl;
+}
+
+
 
 int main(int argc, char **argv) {
     /* SortAlgorithms for testing */
@@ -97,18 +128,38 @@ int main(int argc, char **argv) {
 
 
     /* Some program info */
-    cerr << "Testing " << algSize << " algorithms with an array of ints from 1 to " << maxN << " of size." << endl;
-    cerr << "The range of the numbers is [" << minVal << ", " << maxVal << "]" << endl;
+    cout << "Testing " << algSize << " algorithms with an array of ints from 1 to " << maxN << " of size." << endl;
+    cout << "The range of the numbers is [" << minVal << ", " << maxVal << "]" << endl;
 
-    /* CSV header */
-    csvOutput(csvSep, "Algorithm Name", "Data Type", "Nano Seconds", "N", "Min. Value", "Max. Value");
+    /* Creates the csv folder */
+    char cCurrentPath[FILENAME_MAX];
+    string currentPath = "";
+    getcwd(cCurrentPath, sizeof(cCurrentPath));
+    currentPath += cCurrentPath;
+    string csvFolderName = currentPath + "/" + CSV_FOLDER;
+    int dir_err = system(("mkdir " + csvFolderName + " 2> /dev/null").c_str());
+    if (dir_err == -1) {
+        cerr << "Failed to create '" << CSV_FOLDER << "' folder.";
+        return 3;
+    }
 
     /* Main loop that tests the algorithms */
     for (int algId = 0; algId < algSize; algId += 1) {
-        /* Current test info */
-        cerr << endl << "Testing " << algorithms[algId]->getName() << " sort algorithm." << endl;
+        /* Current sort algorithm */
+        SortAlgorithm *curSortAlg = algorithms[algId];
 
-        cerr << "With random numbers array..." << endl;
+        /* Current file to write */
+        ofstream csvFile;
+
+        /* Current data type */
+        string curDataType;
+
+        /* Current test info */
+        cout << endl << "Testing " << curSortAlg->getName() << " sort algorithm." << endl;
+
+        curDataType = "Random Array";
+        openAlgCSVFile(&csvFile, csvSep, curSortAlg->getName(), curDataType);
+        cout << "With random numbers array..." << endl;
         for (int N = 1; N <= maxN; N += 1) {
             //cerr << "N=" << N << endl;
 
@@ -118,50 +169,59 @@ int main(int argc, char **argv) {
             //ArrayUtils::printArray(array, N);
 
             /* Time measurement */
-            long time = measureAlgTime(algorithms[algId], array, N);
+            long time = measureAlgTime(curSortAlg, array, N);
 
             /* CSV output */
-            csvOutput(csvSep, algorithms[algId]->getName(), "Random Array", time, N, minVal, maxVal);
+            csvOutput(&csvFile, csvSep, curSortAlg->getName(), curDataType, time, N, minVal, maxVal);
 
             //ArrayUtils::printArray(array, N);
 
             /* Deletes the old array */
             delete[] array;
         }
+        /* Closes the file */
+        csvFile.close();
 
-        cerr << "With crescent sorted numbers array..." << endl;
+        curDataType = "Random Crescent Sorted Array";
+        openAlgCSVFile(&csvFile, csvSep, curSortAlg->getName(), curDataType);
+        cout << "With crescent sorted numbers array..." << endl;
         for (int N = 1; N <= maxN; N += 1) {
             /* Allocate the array */
             int *array = ArrayUtils::genRandCresSortedNumArray(N, minVal, maxVal);
             //ArrayUtils::printArray(array, N);
 
             /* Time measurement */
-            long time = measureAlgTime(algorithms[algId], array, N);
+            long time = measureAlgTime(curSortAlg, array, N);
 
             /* CSV output */
-            csvOutput(csvSep, algorithms[algId]->getName(), "Random Crescent Sorted Array", time, N, minVal, maxVal);
+            csvOutput(&csvFile, csvSep, curSortAlg->getName(), curDataType, time, N, minVal, maxVal);
 
             /* Deletes the old array */
             delete[] array;
         }
+        /* Closes the file */
+        csvFile.close();
 
-        cerr << "With decrescent sorted numbers array..." << endl;
+        curDataType = "Random Decrescent Sorted Array";
+        openAlgCSVFile(&csvFile, csvSep, curSortAlg->getName(), curDataType);
+        cout << "With decrescent sorted numbers array..." << endl;
         for (int N = 1; N <= maxN; N += 1) {
             /* Allocate the array */
             int *array = ArrayUtils::genRandDecSortedNumArray(N, minVal, maxVal);
             //ArrayUtils::printArray(array, N);
 
             /* Time measurement */
-            long time = measureAlgTime(algorithms[algId], array, N);
+            long time = measureAlgTime(curSortAlg, array, N);
 
             /* CSV output */
-            csvOutput(csvSep, algorithms[algId]->getName(), "Random Decrescent Sorted Array", time, N, minVal, maxVal);
+            csvOutput(&csvFile, csvSep, curSortAlg->getName(), curDataType, time, N, minVal, maxVal);
 
             /* Deletes the old array */
             delete[] array;
         }
+        /* Closes the file */
+        csvFile.close();
     }
-
 
     /* Delete algorithms array */
     for (int i = 0; i < algSize; i++) {
