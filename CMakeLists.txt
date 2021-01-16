@@ -3,10 +3,14 @@ project(sort_compare)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES SortAlgorithms/RadixSort.cpp SortAlgorithms/RadixSort.h SortAlgorithms/SortAlgorithm.cpp SortAlgorithms/SortAlgorithm.h SortAlgorithms/ArrayUtils.cpp SortAlgorithms/ArrayUtils.h SortAlgorithms/InsertionSort.cpp SortAlgorithms/InsertionSort.h SortAlgorithms/BubbleSort.cpp SortAlgorithms/BubbleSort.h SortAlgorithms/QuickSort.cpp SortAlgorithms/QuickSort.h SortAlgorithms/QuickSort.cpp SortAlgorithms/QuickSort.h SortAlgorithms/SelectionSort.cpp SortAlgorithms/SelectionSort.h SortAlgorithms/MergeSort.cpp SortAlgorithms/MergeSort.h)
-add_library(sort_algorithms SHARED ${SOURCE_FILES})
+include_directories(${PROJECT_SOURCE_DIR})
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/SortAlgorithms/*.cpp ${PROJECT_SOURCE_DIR}/src/SortAlgorithms/*.h)
 
-set(MAIN_FILES Main.cpp)
+add_library(sort_algorithms SHARED ${SRC_FILES})
+set_target_properties(sort_algorithms PROPERTIES LINKER_LANGUAGE CXX)
+
+set(MAIN_FILES src/Main.cpp)
 add_executable(sortalgs ${MAIN_FILES})
-target_link_libraries(sortalgs sort_algorithms)
+set_target_properties(sortalgs PROPERTIES LINKER_LANGUAGE CXX)
 
+target_link_libraries(sortalgs sort_algorithms)
